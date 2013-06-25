@@ -1,15 +1,22 @@
 package impl;
 
-import java.math.BigDecimal;
-
 public class Ingresso {
-	
-	public Ingresso(){
-		
+	CalculaDescontosDoDia calculaDescontosDoDia;
+
+	public Ingresso() {
+
 	}
 
-	public BigDecimal precoAPagar(TipoIngresso tipoIngresso, DiaDaSemana diaDaSemana){
-		return new BigDecimal(0.00);
+	public double precoAPagar(TipoIngresso tipoIngresso, DiaDaSemana diaDaSemana) {
+		double precoAPagar, desconto, precoConvencional;
+
+		precoConvencional = tipoIngresso.retornaPrecoConvencional();
+		calculaDescontosDoDia = new CalculaDescontosDoDia(diaDaSemana);
+		desconto = precoConvencional
+				* calculaDescontosDoDia.percentualDescontoPorTipo(tipoIngresso)
+				/ 100;
+		precoAPagar = precoConvencional - desconto;
+		return precoAPagar;
 	}
 
 }

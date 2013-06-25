@@ -17,26 +17,13 @@ public class CalculaDescontosDoDia {
 	private void inicializaPercentuaisDesconto() {
 		switch (diaDaSemana) {
 		case SEGUNDA:
-			descontosPorTipo.put(TipoIngresso.CRIANCA, 10);
 			descontosPorTipo.put(TipoIngresso.ESTUDANTE, 10);
-			descontosPorTipo.put(TipoIngresso.IDOSO, 10);
 			break;
-		case TERCA:
-			descontosPorTipo.put(TipoIngresso.CRIANCA, 15);
-			descontosPorTipo.put(TipoIngresso.ESTUDANTE, 5);
-			descontosPorTipo.put(TipoIngresso.IDOSO, 15);
-			break;	
 		case QUARTA:
-			descontosPorTipo.put(TipoIngresso.CRIANCA, 30);
 			descontosPorTipo.put(TipoIngresso.ESTUDANTE, 50);
-			descontosPorTipo.put(TipoIngresso.IDOSO, 40);
 			break;
-		case QUINTA:
-			descontosPorTipo.put(TipoIngresso.ESTUDANTE, 30);
-			descontosPorTipo.put(TipoIngresso.IDOSO, 30);
-			break;	
 		case SEXTA:
-			descontosPorTipo.put(TipoIngresso.CRIANCA, 11);
+			descontosPorTipo.put(TipoIngresso.ESTUDANTE, 50);
 			break;
 		case SAB_DOM_FER:
 			descontosPorTipo.put(TipoIngresso.IDOSO, 5);
@@ -51,7 +38,8 @@ public class CalculaDescontosDoDia {
 		if (percentual == null) {
 			percentual = 0;
 		}
-		if (tipoIngresso == TipoIngresso.ESTUDANTE && percentual < DESCONTO_GERAL_ESTUDANTE && diaDaSemana != DiaDaSemana.SAB_DOM_FER) {
+		if (tipoIngresso == TipoIngresso.ESTUDANTE
+				&& percentual < DESCONTO_GERAL_ESTUDANTE) {
 			return DESCONTO_GERAL_ESTUDANTE;
 		} else
 			return percentual.intValue();
