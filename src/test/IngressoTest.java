@@ -2,28 +2,31 @@ package test;
 
 import impl.DiaDaSemana;
 import impl.Ingresso;
-import impl.TipoIngresso;
-
-import java.math.MathContext;
+import impl.IngressoCrianca;
+import impl.IngressoEstudante;
+import impl.IngressoIdoso;
+import impl.TipoDoIngresso;
 
 import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
-public class IngressoTest {
-	MathContext precisao = new MathContext(2);
 
-	TipoIngresso ingressoCrianca;
-	TipoIngresso ingressoEstudante;
-	TipoIngresso ingressoIdoso;
+public class IngressoTest {
+
+	TipoDoIngresso ingressoCrianca;
+	TipoDoIngresso ingressoEstudanteComCarteirinha;
+	TipoDoIngresso ingressoEstudanteSemCarteirinha;
+	TipoDoIngresso ingressoIdoso;
 
 	public Ingresso ingresso;
 
 	@Before
 	public void setup() {
-		ingressoCrianca = TipoIngresso.valueOf("CRIANCA");
-		ingressoEstudante = TipoIngresso.valueOf("ESTUDANTE");
-		ingressoIdoso = TipoIngresso.valueOf("IDOSO");
+		ingressoCrianca = new IngressoCrianca();
+		ingressoEstudanteSemCarteirinha = new IngressoEstudante(false);
+		ingressoEstudanteComCarteirinha = new IngressoEstudante(true);
+		ingressoIdoso = new IngressoIdoso();
 		ingresso = new Ingresso();
 	}
 
@@ -40,8 +43,14 @@ public class IngressoTest {
 	}
 
 	@Test
-	public void EstudanteTem50PorcentoDescontoQuarta() {
-		Assert.assertTrue(ingresso.precoAPagar(ingressoEstudante,
+	public void EstudanteComCarteirinhaTem50PorcentoDescontoQuarta() {
+		Assert.assertTrue(ingresso.precoAPagar(ingressoEstudanteComCarteirinha,
+				DiaDaSemana.QUARTA) - 4.0 == 0);
+	}
+	
+	@Test
+	public void EstudanteSemCarteirinhaTem50PorcentoDescontoQuarta() {
+		Assert.assertTrue(ingresso.precoAPagar(ingressoEstudanteSemCarteirinha,
 				DiaDaSemana.QUARTA) - 4.0 == 0);
 	}
 }

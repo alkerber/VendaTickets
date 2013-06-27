@@ -7,7 +7,7 @@ public class Ingresso {
 
 	}
 
-	public double precoAPagar(TipoIngresso tipoIngresso, DiaDaSemana diaDaSemana) {
+	public double precoAPagar(TipoDoIngresso tipoIngresso, DiaDaSemana diaDaSemana) {
 		double precoAPagar, desconto, precoConvencional;
 
 		precoConvencional = tipoIngresso.retornaPrecoConvencional();

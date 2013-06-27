@@ -7,7 +7,7 @@ public class CalculaDescontosDoDia {
 
 	DiaDaSemana diaDaSemana;
 	public final int DESCONTO_GERAL_ESTUDANTE = 35;
-	Map<TipoIngresso, Integer> descontosPorTipo = new HashMap<TipoIngresso, Integer>();
+	Map<TiposDeIngresso, Integer> descontosPorTipo = new HashMap<TiposDeIngresso, Integer>();
 
 	public CalculaDescontosDoDia(DiaDaSemana diaDaSemana) {
 		this.diaDaSemana = diaDaSemana;
@@ -17,44 +17,51 @@ public class CalculaDescontosDoDia {
 	private void inicializaPercentuaisDesconto() {
 		switch (diaDaSemana) {
 		case SEGUNDA:
-			descontosPorTipo.put(TipoIngresso.CRIANCA, 10);
-			descontosPorTipo.put(TipoIngresso.ESTUDANTE, 10);
-			descontosPorTipo.put(TipoIngresso.IDOSO, 10);
+			descontosPorTipo.put(TiposDeIngresso.CRIANCA, 10);
+			descontosPorTipo.put(TiposDeIngresso.ESTUDANTE, 10);
+			descontosPorTipo.put(TiposDeIngresso.IDOSO, 10);
 			break;
 		case TERCA:
-			descontosPorTipo.put(TipoIngresso.CRIANCA, 15);
-			descontosPorTipo.put(TipoIngresso.ESTUDANTE, 5);
-			descontosPorTipo.put(TipoIngresso.IDOSO, 15);
-			break;	
+			descontosPorTipo.put(TiposDeIngresso.CRIANCA, 15);
+			descontosPorTipo.put(TiposDeIngresso.ESTUDANTE, 5);
+			descontosPorTipo.put(TiposDeIngresso.IDOSO, 15);
+			break;
 		case QUARTA:
-			descontosPorTipo.put(TipoIngresso.CRIANCA, 30);
-			descontosPorTipo.put(TipoIngresso.ESTUDANTE, 50);
-			descontosPorTipo.put(TipoIngresso.IDOSO, 40);
+			descontosPorTipo.put(TiposDeIngresso.CRIANCA, 30);
+			descontosPorTipo.put(TiposDeIngresso.ESTUDANTE, 50);
+			descontosPorTipo.put(TiposDeIngresso.IDOSO, 40);
 			break;
 		case QUINTA:
-			descontosPorTipo.put(TipoIngresso.ESTUDANTE, 30);
-			descontosPorTipo.put(TipoIngresso.IDOSO, 30);
-			break;	
+			descontosPorTipo.put(TiposDeIngresso.ESTUDANTE, 30);
+			descontosPorTipo.put(TiposDeIngresso.IDOSO, 30);
+			break;
 		case SEXTA:
-			descontosPorTipo.put(TipoIngresso.CRIANCA, 11);
+			descontosPorTipo.put(TiposDeIngresso.CRIANCA, 11);
 			break;
 		case SAB_DOM_FER:
-			descontosPorTipo.put(TipoIngresso.IDOSO, 5);
-			break;
-		default:
+			descontosPorTipo.put(TiposDeIngresso.IDOSO, 5);
 			break;
 		}
 	}
 
-	public int percentualDescontoPorTipo(TipoIngresso tipoIngresso) {
-		Integer percentual = descontosPorTipo.get(tipoIngresso);
+	public int percentualDescontoPorTipo(TipoDoIngresso tipoIngresso) {
+		Integer percentual = descontosPorTipo.get(tipoIngresso.retornaTipoDoIngresso());
 		if (percentual == null) {
 			percentual = 0;
 		}
-		if (tipoIngresso == TipoIngresso.ESTUDANTE && percentual < DESCONTO_GERAL_ESTUDANTE && diaDaSemana != DiaDaSemana.SAB_DOM_FER) {
-			return DESCONTO_GERAL_ESTUDANTE;
-		} else
-			return percentual.intValue();
-
+		if (isEstudanteComCarteirinha(tipoIngresso)) {
+			if (DESCONTO_GERAL_ESTUDANTE > percentual && diaDaSemana != DiaDaSemana.SAB_DOM_FER ) {
+				percentual = DESCONTO_GERAL_ESTUDANTE;
+			}
+		}
+		return percentual.intValue();
 	}
+
+	private boolean isEstudanteComCarteirinha(TipoDoIngresso tipoIngresso) {
+		if (tipoIngresso.getClass() == IngressoEstudante.class) {
+			IngressoEstudante ingressoEstudante = (IngressoEstudante) tipoIngresso;
+			return ingressoEstudante.possuiCarteirinha();
+		} else return false;
+	}
+
 }
